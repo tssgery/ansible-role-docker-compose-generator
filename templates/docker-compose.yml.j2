@@ -1,10 +1,13 @@
 # {{ ansible_managed }}
 ---
-version: "{{ compose_schema_version | default('2') }}"
+version: "{{ compose_schema_version | default('3') }}"
 services:
-{% for container in containers %}
+{% for container in docker_compose.containers %}
 {% if container.active %}
   {{ container.service_name }}:
+{% if container.build is defined %}
+    build: {{ container.build }}
+{% endif %}
     image: {{ container.image }}
     container_name: {{ container.container_name | default(container.service_name) }}
 {% if container.extra_hosts is defined %}
@@ -13,11 +16,11 @@ services:
       - {{ host }}
 {% endfor %}
 {% endif %}
+{% if container.user is defined %}
+    user: {{ container.user }}
+{% endif %}
 {% if container.network_mode is defined %}
     network_mode: {{ container.network_mode }}
-{% endif %}
-{% if container.build is defined %}
-    build: {{ container.build }}
 {% endif %}
 {% if container.privileged is defined %}
     privileged: {{ container.privileged }}
@@ -105,9 +108,6 @@ services:
       - {{ param }}
 {% endfor %}
 {% endif %}
-{% if container.shm_size is defined %}
-    shm_size: {{ container.shm_size }}
-{% endif %}
 {% if container.ulimits is defined %}
     ulimits:
 {% if container.ulimits.nproc is defined %}
@@ -116,12 +116,6 @@ services:
 {% if container.ulimits.nofile is defined %}
       nofile:
 {% for param, value in container.ulimits.nofile.items() %}
-        {{ param }}: {{ value }}
-{% endfor %}
-{% endif %}
-{% if container.ulimits.memlock is defined %}
-      memlock:
-{% for param, value in container.ulimits.memlock.items() %}
         {{ param }}: {{ value }}
 {% endfor %}
 {% endif %}
@@ -148,6 +142,18 @@ services:
 {% endfor %}
 {% endif %}
 {% endif %}
+{% if container.labels is defined %}
+    labels:
+{% for label in container.labels %}
+      - {{ label }}
+{% endfor %}
+{% endif %}
+{% if container.networks is defined %}
+    networks:
+    {% for network in container.networks %}
+        {{ network }}:
+    {% endfor %}
+{% endif %}
 {% if container.env_file is defined %}
     env_file:
 {% for envfile in container.env_file %}
@@ -159,3 +165,45 @@ services:
 {% endif %}
 {% endif %}
 {% endfor %}
+
+
+{% if container.networks is defined %}
+networks:
+{% for network in container.networks %}
+    {{ network }}:
+        {% if network.external is defined %}
+        external: {{ network.external }}
+        {% endif %}
+        {% if network.name is defined %}
+        name: {{ network.name }}
+        {% endif %}
+        {% if network.internal is defined %}
+        internal: {{ network.internal }}
+        {% endif %}
+        {% if network.internal is defined %}
+        internal: {{ network.internal }}
+        {% endif %}
+{% endfor %}
+{% endif %}
+
+{% if docker_compose.volumes is defined %}
+volumes:
+{% for volume in docker_compose.volumes %}
+    {{ volume.name }}:
+    {% if volume.external is defined %}
+        external: {% volume.external %}
+    {% endif %}
+    {% if volume.driver_opts is defined %}
+        driver_opts:
+        {% if volume.driver_opts.type is defined %}
+            type: {{ volume.driver_opts.type }}
+        {% endif %}
+        {% if volume.driver_opts.o is defined %}
+            o: {{ volume.driver_opts.o }}
+        {% endif %}
+         {% if volume.driver_opts.device is defined %}
+            device: {{ volume.driver_opts.device }}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+{% endif %}
