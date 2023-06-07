@@ -6,7 +6,21 @@ services:
 {% if container.active %}
   {{ container.service_name }}:
 {% if container.build is defined %}
+{% if container.build is string %}
     build: {{ container.build }}
+{% else %}
+    build:
+        context: {{ container.build.context }}
+        {% if container.build.dockerfile is defined %}
+        dockerfile: {{ container.build.dockerfile }}
+        {% endif %}
+        {% if container.build.args is defined %}
+        args:
+            {% for param, value in container.build.args.items() %}
+            {{ param }}: {{ value }}
+            {% endfor %}
+        {% endif %}
+{% endif %}
 {% endif %}
     image: {{ container.image }}
     container_name: {{ container.container_name | default(container.service_name) }}
@@ -83,6 +97,27 @@ services:
       - {{ command }}
 {% endfor %}
 {% endif %}
+{% endif %}
+{% if container.healthcheck is defined %}
+    healthcheck:
+        {% if container.healthcheck.test is defined %}
+        test: {{ container.healthcheck.test }}
+        {% endif %}
+        {% if container.healthcheck.interval is defined %}
+        interval: {{ container.healthcheck.interval }}
+        {% endif %}
+        {% if container.healthcheck.timeout is defined %}
+        timeout: {{ container.healthcheck.timeout }}
+        {% endif %}
+        {% if container.healthcheck.retries is defined %}
+        retries: {{ container.healthcheck.retries }}
+        {% endif %}
+        {% if container.healthcheck.start_period is defined %}
+        start_period: {{ container.healthcheck.start_period }}
+        {% endif %}
+        {% if container.healthcheck.disable is defined %}
+        disable: {{ container.healthcheck.disable }}
+        {% endif %}
 {% endif %}
 {% if container.security_opt is defined %}
     security_opt:
