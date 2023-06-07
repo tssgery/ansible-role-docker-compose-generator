@@ -22,19 +22,10 @@ services:
 {% if container.network_mode is defined %}
     network_mode: {{ container.network_mode }}
 {% endif %}
-{% if container.privileged is defined %}
-    privileged: {{ container.privileged }}
-{% endif %}
 {% if container.cap_add is defined %}
     cap_add: 
 {% for cap in container.cap_add %}
       - {{ cap }}
-{% endfor %}
-{% endif %}
-{% if container.group_add is defined %}
-    group_add: 
-{% for group in container.group_add %}
-      - {{ group }}
 {% endfor %}
 {% endif %}
 {% if container.devices is defined %}
@@ -82,9 +73,6 @@ services:
 {% endif %}
 {% if container.hostname is defined %}
     hostname: {{ container.hostname }}
-{% endif %}
-{% if container.mem_limit is defined %}
-    mem_limit: {{ container.mem_limit }}
 {% endif %}
 {% if container.command is defined %}
 {% if container.command is string %}
