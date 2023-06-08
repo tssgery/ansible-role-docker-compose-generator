@@ -8,7 +8,7 @@
 - name: Write docker compose file
   ansible.builtin.template:
     src: "{{ role_path }}/templates/docker-compose.yml.j2"
-    dest: "{{ docker_compose.generator_output_path }}/docker-compose.yml"
+    dest: "{{ docker_compose.generator.output_path }}/docker-compose.yml"
     owner: "{{ docker_compose.generator.uid }}"
     group: "{{ docker_compose.generator.gid }}"
     mode: "0644"
