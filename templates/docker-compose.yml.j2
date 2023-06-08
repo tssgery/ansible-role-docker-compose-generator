@@ -2,9 +2,8 @@
 ---
 version: "{{ docker_compose.version | default('3') }}"
 services:
-{% for container in docker_compose.containers %}
-{% if container.active %}
-  {{ container.service_name }}:
+{% for key, container in docker_compose.containers.items() %}
+  {{ key }}:
 {% if container.build is defined %}
 {% if container.build is string %}
     build: {{ container.build }}
@@ -38,9 +37,9 @@ services:
 {% endif %}
 {% if container.cap_add is defined %}
     cap_add: 
-{% for cap in container.cap_add %}
+    {% for cap in container.cap_add %}
       - {{ cap }}
-{% endfor %}
+    {% endfor %}
 {% endif %}
 {% if container.devices is defined %}
     devices:
@@ -70,12 +69,12 @@ services:
     environment:
 {% if container.include_global_env_vars | default(false) %}
 {% for global_var in global_env_vars %}
-      - {{ global_var }}
+        - {{ global_var }}
 {% endfor %}
 {% endif %}
 {% if container.environment is defined %}
 {% for env_var in container.environment %}
-      - {{ env_var }}
+        - {{ env_var }}
 {% endfor %}
 {% endif %}
 {% endif %}
@@ -100,24 +99,24 @@ services:
 {% endif %}
 {% if container.healthcheck is defined %}
     healthcheck:
-        {% if container.healthcheck.test is defined %}
+{% if container.healthcheck.test is defined %}
         test: {{ container.healthcheck.test }}
-        {% endif %}
-        {% if container.healthcheck.interval is defined %}
+{% endif %}
+{% if container.healthcheck.interval is defined %}
         interval: {{ container.healthcheck.interval }}
-        {% endif %}
-        {% if container.healthcheck.timeout is defined %}
+{% endif %}
+{% if container.healthcheck.timeout is defined %}
         timeout: {{ container.healthcheck.timeout }}
-        {% endif %}
-        {% if container.healthcheck.retries is defined %}
+{% endif %}
+{% if container.healthcheck.retries is defined %}
         retries: {{ container.healthcheck.retries }}
-        {% endif %}
-        {% if container.healthcheck.start_period is defined %}
+{% endif %}
+{% if container.healthcheck.start_period is defined %}
         start_period: {{ container.healthcheck.start_period }}
-        {% endif %}
-        {% if container.healthcheck.disable is defined %}
+{% endif %}
+{% if container.healthcheck.disable is defined %}
         disable: {{ container.healthcheck.disable }}
-        {% endif %}
+{% endif %}
 {% endif %}
 {% if container.security_opt is defined %}
     security_opt:
@@ -173,9 +172,9 @@ services:
 {% endif %}
 {% if container.networks is defined %}
     networks:
-    {% for network in container.networks %}
+{% for network in container.networks %}
         {{ network }}:
-    {% endfor %}
+{% endfor %}
 {% endif %}
 {% if container.env_file is defined %}
     env_file:
@@ -186,47 +185,48 @@ services:
 {% if container.restart is defined %}
     restart: {{ container.restart }}
 {% endif %}
-{% endif %}
+
 {% endfor %}
-
-
 {% if container.networks is defined %}
 networks:
 {% for network in container.networks %}
     {{ network }}:
-        {% if network.external is defined %}
+{% if network.external is defined %}
         external: {{ network.external }}
-        {% endif %}
-        {% if network.name is defined %}
+{% endif %}
+{% if network.name is defined %}
         name: {{ network.name }}
-        {% endif %}
-        {% if network.internal is defined %}
+{% endif %}
+{% if network.internal is defined %}
         internal: {{ network.internal }}
-        {% endif %}
-        {% if network.internal is defined %}
+{% endif %}
+{% if network.internal is defined %}
         internal: {{ network.internal }}
-        {% endif %}
+{% endif %}
 {% endfor %}
 {% endif %}
-
 {% if docker_compose.volumes is defined %}
 volumes:
 {% for volume in docker_compose.volumes %}
+{% if volume is string %}
+    {{ volume }}:
+{% else %}
     {{ volume.name }}:
-    {% if volume.external is defined %}
-        external: {% volume.external %}
-    {% endif %}
-    {% if volume.driver_opts is defined %}
+{% if volume.external is defined %}
+        external: {{ volume.external }}
+{% endif %}
+{% if volume.driver_opts is defined %}
         driver_opts:
-        {% if volume.driver_opts.type is defined %}
+{% if volume.driver_opts.type is defined %}
             type: {{ volume.driver_opts.type }}
-        {% endif %}
-        {% if volume.driver_opts.o is defined %}
+{% endif %}
+{% if volume.driver_opts.o is defined %}
             o: {{ volume.driver_opts.o }}
-        {% endif %}
-         {% if volume.driver_opts.device is defined %}
+{% endif %}
+{% if volume.driver_opts.device is defined %}
             device: {{ volume.driver_opts.device }}
-        {% endif %}
-    {% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
 {% endfor %}
 {% endif %}
