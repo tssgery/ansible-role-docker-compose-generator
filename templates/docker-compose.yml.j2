@@ -37,9 +37,9 @@ services:
 {% endif %}
 {% if container.cap_add is defined %}
     cap_add: 
-    {% for cap in container.cap_add %}
+{% for cap in container.cap_add %}
       - {{ cap }}
-    {% endfor %}
+{% endfor %}
 {% endif %}
 {% if container.devices is defined %}
     devices:
