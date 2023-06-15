@@ -22,7 +22,9 @@ services:
 {% endif %}
 {% endif %}
     image: {{ container.image }}
-    container_name: {{ container.container_name | default(container.service_name) }}
+{% if container.container_name is defined %}
+    container_name: {{ container.container_name}}
+{% endif %}
 {% if container.extra_hosts is defined %}
     extra_hosts:
 {% for host in container.extra_hosts %}
