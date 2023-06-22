@@ -21,7 +21,9 @@ services:
         {% endif %}
 {% endif %}
 {% endif %}
+{% if container.image is defined %}
     image: {{ container.image }}
+{% endif %}
 {% if container.container_name is defined %}
     container_name: {{ container.container_name}}
 {% endif %}
