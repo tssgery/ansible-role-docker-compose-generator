@@ -101,6 +101,16 @@ services:
 {% endfor %}
 {% endif %}
 {% endif %}
+{% if container.entrypoint is defined %}
+{% if container.entrypoint is string %}
+    entrypoint: {{ container.entrypoint }}
+{% else %}
+    enctrypoint:
+{% for entrypoint in container.entrypoint %}
+      - {{ entrypoint }}
+{% endfor %}
+{% endif %}
+{% endif %}
 {% if container.healthcheck is defined %}
     healthcheck:
 {% if container.healthcheck.test is defined %}
