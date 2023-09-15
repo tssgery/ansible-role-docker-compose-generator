@@ -2,8 +2,8 @@
 ---
 version: "{{ docker_compose.version | default('3') }}"
 services:
-{% for key, container in docker_compose.containers.items() %}
-  {{ key }}:
+{% for container in docker_compose.containers %}
+  {{ container.service_name }}:
 {% if container.build is defined %}
 {% if container.build is string %}
     build: {{ container.build }}
