@@ -4,3 +4,5 @@ docker_compose:
     output_path: "~/compose"
     uid: "1000"
     gid: "1000"
+    file_mode: "644"
+    directory_mode: "755" 
