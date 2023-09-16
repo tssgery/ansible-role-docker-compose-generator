@@ -73,7 +73,7 @@ services:
     environment:
 {% if container.include_global_env_vars | default(false) %}
 {% for global_var in global_env_vars %}
-        - {{ global_var }}
+      - {{ global_var }}
 {% endfor %}
 {% endif %}
 {% if container.environment is defined %}
