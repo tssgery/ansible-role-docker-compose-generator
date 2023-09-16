@@ -57,12 +57,6 @@ services:
       - {{ volume }}
 {% endfor %}
 {% endif %}
-{% if container.labels is defined %}
-    labels:
-{% for label in container.labels %}
-      - {{ label }}
-{% endfor %}
-{% endif %}
 {% if container.ports is defined %}
     ports:
 {% for port in container.ports %}
