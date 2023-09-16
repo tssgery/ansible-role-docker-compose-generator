@@ -72,7 +72,7 @@ services:
 {% endif %}
 {% if container.environment is defined %}
 {% for env_var in container.environment %}
-        - {{ env_var }}
+      - {{ env_var }}
 {% endfor %}
 {% endif %}
 {% endif %}
