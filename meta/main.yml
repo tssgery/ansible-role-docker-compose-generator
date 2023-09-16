@@ -1,10 +1,10 @@
 ---
 galaxy_info:
   role_name: docker_compose_generator
-  namespace: roxxers
-  author: Roxie Gibson
+  namespace: tssgery
+  author: Eric Young
   description: Create a docker-compose.yml file
-  issue_tracker_url: https://github.com/Roxxers/ansible-role-create-users/issues
+  issue_tracker_url: https://github.com/tssgery/ansible-role-create-users/issues
   license: GPLv2
   min_ansible_version: "2.4"
   platforms:
