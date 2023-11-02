@@ -5,7 +5,7 @@ name: Release
       - '*'
 
 env:
-  GALAXY_USERNAME: Roxxers
+  GALAXY_USERNAME: tssgery
 
 jobs:
 
