@@ -228,7 +228,7 @@ volumes:
 {% endif %}
 {% if volume.driver_opts is defined %}
         driver_opts:
-{% for key, value in volume.driver_opts.iteritems{} %}
+{% for key, value in volume.driver_opts.iteritems() %}
            {{ key }}: {{ value }}
 {% endfor %}
 {% endif %}
