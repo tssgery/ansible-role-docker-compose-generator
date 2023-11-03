@@ -223,17 +223,14 @@ volumes:
 {% if volume.external is defined %}
         external: {{ volume.external }}
 {% endif %}
+{% if volume.driver is defined %}
+        driver: {{ volume.driver }}
+{% endif %}
 {% if volume.driver_opts is defined %}
         driver_opts:
-{% if volume.driver_opts.type is defined %}
-            type: {{ volume.driver_opts.type }}
-{% endif %}
-{% if volume.driver_opts.o is defined %}
-            o: {{ volume.driver_opts.o }}
-{% endif %}
-{% if volume.driver_opts.device is defined %}
-            device: {{ volume.driver_opts.device }}
-{% endif %}
+{% for key, value in volume.driver_opts.iteritems{} %}
+           {{ key }}: {{ value }}
+{% endfor %}
 {% endif %}
 {% endif %}
 {% endfor %}
