@@ -14,3 +14,14 @@
     owner: "{{ docker_compose.generator.uid }}"
     group: "{{ docker_compose.generator.gid }}"
     mode: "{{ docker_compose.generator.file_mode }}"
+
+- name: Write dorenv file
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/dotenv.j2"
+    dest: "{{ docker_compose.generator.output_path }}/.env"
+    owner: "{{ docker_compose.generator.uid }}"
+    group: "{{ docker_compose.generator.gid }}"
+    mode: "{{ docker_compose.generator.file_mode }}"
+  when:
+    - docker_compose.dotenv is defined
+    - docker_compose.dotenv.keys()| length > 0

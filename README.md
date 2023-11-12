@@ -17,6 +17,18 @@ container_data_path: /data
 
 # compose definitions
 docker_compose:
+  # generator configuration
+  generator:
+    output_path: "/docker"
+    uid: "0"
+    gid: "0"
+    directory_mode: "755"
+    file_mode: "644"
+  # .env file contents
+  dotenv:
+    ENV1: value1
+    ENV2: value 22
+  # services to run
   containers:
     - service_name: letsencrypt
       active: true
