@@ -1,8 +1,13 @@
 # {{ ansible_managed }}
 ---
 version: "{{ docker_compose.version | default('3') }}"
+
+#
+# services
+#
 services:
 {% for container in docker_compose.containers %}
+  # {{ container.service_name }}
   {{ container.service_name }}:
 {% if container.build is defined %}
 {% if container.build is string %}
@@ -25,7 +30,9 @@ services:
     image: {{ container.image }}
 {% endif %}
 {% if container.container_name is defined %}
-    container_name: {{ container.container_name}}
+    container_name: {{ container.container_name }}
+{% else %}
+    container_name: {{ container.service_name }}
 {% endif %}
 {% if container.extra_hosts is defined %}
     extra_hosts:
@@ -195,7 +202,11 @@ services:
 {% endif %}
 
 {% endfor %}
+
 {% if container.networks is defined %}
+#
+# NETWORKS
+#
 networks:
 {% for network in container.networks %}
     {{ network }}:
@@ -211,15 +222,22 @@ networks:
 {% if network.internal is defined %}
         internal: {{ network.internal }}
 {% endif %}
+
 {% endfor %}
 {% endif %}
+
+
 {% if docker_compose.volumes is defined %}
+#
+# VOLUMES
+#
 volumes:
 {% for volume in docker_compose.volumes %}
 {% if volume is string %}
     {{ volume }}:
 {% else %}
     {{ volume.name }}:
+{% endif %}
 {% if volume.external is defined %}
         external: {{ volume.external }}
 {% endif %}
@@ -232,6 +250,6 @@ volumes:
            {{ key }}: {{ value }}
 {% endfor %}
 {% endif %}
-{% endif %}
+
 {% endfor %}
 {% endif %}
