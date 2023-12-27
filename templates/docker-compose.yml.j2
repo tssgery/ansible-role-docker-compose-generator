@@ -37,7 +37,7 @@ services:
 {% if container.extra_hosts is defined %}
     extra_hosts:
 {% for host in container.extra_hosts %}
-      - {{ host }}
+      - "{{ host }}"
 {% endfor %}
 {% endif %}
 {% if container.user is defined %}
@@ -55,31 +55,31 @@ services:
 {% if container.devices is defined %}
     devices:
 {% for device in container.devices %}
-      - {{ device }}
+      - "{{ device }}"
 {% endfor %}
 {% endif %}
 {% if container.volumes is defined %}
     volumes:
 {% for volume in container.volumes %}
-      - {{ volume }}
+      - "{{ volume }}"
 {% endfor %}
 {% endif %}
 {% if container.ports is defined %}
     ports:
 {% for port in container.ports %}
-      - {{ port }}
+      - "{{ port }}"
 {% endfor %}
 {% endif %}
 {% if ( container.environment is defined ) or ( container.include_global_env_vars is defined and container.include_global_env_vars) %}
     environment:
 {% if container.include_global_env_vars | default(false) %}
 {% for global_var in global_env_vars %}
-      - {{ global_var }}
+      - "{{ global_var }}"
 {% endfor %}
 {% endif %}
 {% if container.environment is defined %}
 {% for env_var in container.environment %}
-      - {{ env_var }}
+      - "{{ env_var }}"
 {% endfor %}
 {% endif %}
 {% endif %}
@@ -98,7 +98,7 @@ services:
 {% else %}
     command:
 {% for command in container.command %}
-      - {{ command }}
+      - "{{ command }}"
 {% endfor %}
 {% endif %}
 {% endif %}
@@ -182,7 +182,7 @@ services:
 {% if container.labels is defined %}
     labels:
 {% for label in container.labels %}
-      - {{ label }}
+      - "{{ label }}"
 {% endfor %}
 {% endif %}
 {% if container.networks is defined %}
