@@ -15,7 +15,7 @@
     group: "{{ docker_compose.generator.gid }}"
     mode: "{{ docker_compose.generator.file_mode }}"
 
-- name: Write dorenv file
+- name: Write dotenv file
   ansible.builtin.template:
     src: "{{ role_path }}/templates/dotenv.j2"
     dest: "{{ docker_compose.generator.output_path }}/.env"
