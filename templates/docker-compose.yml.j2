@@ -7,10 +7,7 @@ version: "{{ docker_compose.version | default('3') }}"
 #
 services:
 {% for container in docker_compose.containers %}
-{% if container.active is not defined %}
-{% set container.active = true %}
-{% endif %}
-{% if container.active == true %}
+{% if container.active is not defined or container.active == true %}
   # {{ container.service_name }}
   {{ container.service_name }}:
 {% if container.build is defined %}
