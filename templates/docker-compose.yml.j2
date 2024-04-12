@@ -7,6 +7,10 @@ version: "{{ docker_compose.version | default('3') }}"
 #
 services:
 {% for container in docker_compose.containers %}
+{% if container.active is not defined %}
+{% container.active = true }
+{% endif %}
+{% if container.active == true %}
   # {{ container.service_name }}
   {{ container.service_name }}:
 {% if container.build is defined %}
@@ -200,7 +204,7 @@ services:
 {% if container.restart is defined %}
     restart: {{ container.restart }}
 {% endif %}
-
+{% endif %}
 {% endfor %}
 
 {% if container.networks is defined %}
